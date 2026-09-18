@@ -371,3 +371,4 @@ portfolio/
   sprite; static files are compressed and fingerprinted by WhiteNoise.
 - The page renders completely without JavaScript — the contact form falls back
   to a normal POST.
+# portfolio
