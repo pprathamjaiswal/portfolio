@@ -31,4 +31,5 @@ package.json
 package-lock.json
 neon.ts
 hello.ts
-.neon/
+.neon/.agents/
+skills-lock.json
