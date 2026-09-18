@@ -149,12 +149,22 @@ STORAGES = {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
     },
     "staticfiles": {
-        # Manifest storage fingerprints filenames so browsers can cache them
-        # for a year. Our subclass sets manifest_strict = False, so a stale or
-        # incomplete manifest degrades to an unhashed URL instead of raising
-        # and 500-ing every page. In DEBUG, runserver serves the source files
-        # directly and the manifest is not consulted at all.
-        "BACKEND": "portfolio.storage.ResilientManifestStaticFilesStorage",
+        # On a serverless host (Vercel) the collected STATIC_ROOT directory is
+        # NOT inside the function bundle — static files are served from the
+        # platform CDN instead. Any hashing backend would try to read files off
+        # a disk that is not there and raise
+        #   ValueError: The file '...' could not be found
+        # on every single request. Plain storage emits /static/<name> URLs,
+        # which is exactly what the CDN serves.
+        #
+        # On a normal long-lived server (Render, a VPS, gunicorn anywhere) the
+        # directory IS present, so we keep the hashed, compressed filenames that
+        # let browsers cache assets for a year.
+        "BACKEND": (
+            "django.contrib.staticfiles.storage.StaticFilesStorage"
+            if IS_SERVERLESS
+            else "portfolio.storage.ResilientManifestStaticFilesStorage"
+        ),
     },
 }
 
