@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Page not found — Pratham Jaiswal{% endblock %}
+{% block description %}The page you were looking for doesn't exist.{% endblock %}
+
+{% block body %}
+<main class="error-page" id="main">
+  <div class="shell error-inner">
+    <p class="error-code">404</p>
+    <h1>This page doesn't exist</h1>
+    <p class="section-sub">The link may be out of date, or the page has moved.</p>
+    <a class="btn btn-primary" href="/">
+      Back to the portfolio <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg>
+    </a>
+  </div>
+</main>
+{% endblock %}

@@ -1,0 +1,129 @@
+<section class="section" id="projects" aria-labelledby="projects-title">
+  <div class="shell">
+    <header class="section-head reveal">
+      <p class="eyebrow">03 — Work</p>
+      <h2 class="section-title" id="projects-title">Projects</h2>
+      <p class="section-sub">
+        Pulled live from GitHub and curated by activity, stars and completeness — forks and
+        scratch repositories are filtered out.
+      </p>
+    </header>
+
+    {% if featured_projects %}
+      <ul class="project-grid">
+        {% for project in featured_projects %}
+          <li class="project-card {% if project.featured %}is-featured{% endif %} reveal" style="--d:{{ forloop.counter }}">
+            <div class="project-top">
+              <h3 class="project-name">{{ project.name }}</h3>
+              {% if project.featured %}<span class="badge">Featured</span>{% endif %}
+            </div>
+            <p class="project-desc">{{ project.description }}</p>
+            {% if project.stack %}
+              <ul class="chip-list chip-list-sm">
+                {% for tech in project.stack %}<li class="chip">{{ tech }}</li>{% endfor %}
+              </ul>
+            {% endif %}
+            <div class="project-links">
+              {% if project.repo %}
+                <a href="{{ project.repo }}" target="_blank" rel="noopener noreferrer">
+                  <svg class="icon" aria-hidden="true"><use href="#i-github"></use></svg> Code
+                </a>
+              {% endif %}
+              {% if project.demo %}
+                <a href="{{ project.demo }}" target="_blank" rel="noopener noreferrer">
+                  <svg class="icon" aria-hidden="true"><use href="#i-external"></use></svg> Live demo
+                </a>
+              {% endif %}
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {% if github.profile %}
+      <ul class="gh-stats reveal">
+        <li><strong>{{ github.profile.public_repos }}</strong><span>Public repos</span></li>
+        <li><strong>{{ github.profile.followers }}</strong><span>Followers</span></li>
+        {% if github.total_stars %}<li><strong>{{ github.total_stars }}</strong><span>Stars earned</span></li>{% endif %}
+        {% if github.top_languages %}
+          <li class="gh-stats-langs">
+            <strong>{{ github.top_languages|join:" · " }}</strong><span>Most used languages</span>
+          </li>
+        {% endif %}
+      </ul>
+    {% endif %}
+
+    {% if github.repos %}
+      <ul class="project-grid" id="repoGrid">
+        {% for repo in github.repos %}
+          <li class="project-card reveal" style="--d:{{ forloop.counter }}">
+            <div class="project-top">
+              <h3 class="project-name">
+                <a href="{{ repo.url }}" target="_blank" rel="noopener noreferrer">{{ repo.display_name }}</a>
+              </h3>
+              <ul class="repo-metrics" aria-label="Repository metrics">
+                {% if repo.stars %}
+                  <li><svg class="icon" aria-hidden="true"><use href="#i-star"></use></svg>
+                    <span class="sr-only">Stars:</span>{{ repo.stars }}</li>
+                {% endif %}
+                {% if repo.forks %}
+                  <li><svg class="icon" aria-hidden="true"><use href="#i-fork"></use></svg>
+                    <span class="sr-only">Forks:</span>{{ repo.forks }}</li>
+                {% endif %}
+              </ul>
+            </div>
+
+            <p class="project-desc">{{ repo.description|default:"No description provided on GitHub yet." }}</p>
+
+            {% if repo.topics %}
+              <ul class="chip-list chip-list-sm">
+                {% for topic in repo.topics %}<li class="chip">{{ topic }}</li>{% endfor %}
+              </ul>
+            {% endif %}
+
+            <div class="project-foot">
+              {% if repo.language %}
+                <span class="lang" data-lang="{{ repo.language }}">
+                  <i class="lang-dot" aria-hidden="true"></i>{{ repo.language }}
+                </span>
+              {% endif %}
+              {% if repo.updated %}<span class="muted">Updated {{ repo.updated }}</span>{% endif %}
+            </div>
+
+            <div class="project-links">
+              <a href="{{ repo.url }}" target="_blank" rel="noopener noreferrer">
+                <svg class="icon" aria-hidden="true"><use href="#i-github"></use></svg> Repository
+              </a>
+              {% if repo.homepage %}
+                <a href="{{ repo.homepage }}" target="_blank" rel="noopener noreferrer">
+                  <svg class="icon" aria-hidden="true"><use href="#i-external"></use></svg> Live demo
+                </a>
+              {% endif %}
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+
+    {% elif not featured_projects %}
+      <div class="notice reveal" role="status">
+        <p><strong>GitHub projects are temporarily unavailable.</strong></p>
+        <p class="muted">
+          Live repository data couldn't be loaded right now — you can browse everything
+          directly on GitHub in the meantime.
+        </p>
+      </div>
+    {% endif %}
+
+    {% comment %}
+      Deliberately outside the branches above: this link is a plain string from
+      content.py, so it keeps working when the GitHub API does not.
+    {% endcomment %}
+    <p class="section-cta reveal">
+      <a class="btn btn-ghost" href="{{ github_repos_url }}"
+         target="_blank" rel="noopener noreferrer">
+        <svg class="icon" aria-hidden="true"><use href="#i-github"></use></svg>
+        See all repositories on GitHub
+      </a>
+    </p>
+  </div>
+</section>

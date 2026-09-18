@@ -1,0 +1,94 @@
+{% load static %}
+<section class="hero" id="hero">
+  <div class="shell hero-inner">
+
+    <div class="hero-copy">
+      {% if profile.availability %}
+        <p class="pill reveal">
+          <span class="pill-dot" aria-hidden="true"></span>{{ profile.availability }}
+        </p>
+      {% endif %}
+
+      <h1 class="hero-title reveal" style="--d:1">
+        <span class="hero-greet">Hi, I'm {{ profile.first_name }}</span>
+        <span class="hero-role">
+          <span class="hero-role-text" id="roleText"
+                data-roles="[{% for role in profile.roles %}&quot;{{ role|escapejs }}&quot;{% if not forloop.last %},{% endif %}{% endfor %}]">{{ profile.title }}</span><span class="caret" aria-hidden="true"></span>
+        </span>
+      </h1>
+
+      <p class="hero-tagline reveal" style="--d:2">{{ profile.tagline }}</p>
+
+      <div class="hero-meta reveal" style="--d:3">
+        <span><svg class="icon" aria-hidden="true"><use href="#i-pin"></use></svg>{{ profile.location }}</span>
+        {% if github.profile.public_repos %}
+          <span><svg class="icon" aria-hidden="true"><use href="#i-github"></use></svg>{{ github.profile.public_repos }} public repositories</span>
+        {% endif %}
+      </div>
+
+      <div class="hero-actions reveal" style="--d:4">
+        <a class="btn btn-primary" href="#projects">
+          View projects <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg>
+        </a>
+        <a class="btn btn-ghost" href="#contact">Contact me</a>
+        {% if profile.resume_enabled %}
+          <a class="btn btn-ghost" href="{% static profile.resume_path %}" target="_blank" rel="noopener noreferrer">
+            Résumé <svg class="icon" aria-hidden="true"><use href="#i-external"></use></svg>
+          </a>
+        {% endif %}
+      </div>
+
+      <ul class="hero-socials reveal" style="--d:5">
+        {% for s in primary_socials %}
+          <li>
+            <a href="{{ s.url }}" class="social-link" aria-label="{{ s.name }}: {{ s.handle }}"
+               {% if s.icon != 'mail' %}target="_blank" rel="noopener noreferrer"{% endif %}>
+              <svg class="icon" aria-hidden="true"><use href="#i-{{ s.icon }}"></use></svg>
+              <span>{{ s.name }}</span>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="hero-visual reveal" style="--d:3">
+      <div class="avatar-frame">
+        <div class="avatar-glow" aria-hidden="true"></div>
+        {% if use_local_avatar %}
+          <img class="avatar" src="{% static 'img/profile.jpg' %}" width="320" height="320"
+               alt="Portrait of {{ profile.name }}" fetchpriority="high" decoding="async">
+        {% else %}
+          <img class="avatar" src="{{ avatar_url }}" width="320" height="320"
+               alt="Portrait of {{ profile.name }}" fetchpriority="high" decoding="async"
+               referrerpolicy="no-referrer"
+               onerror="this.closest('.avatar-frame').classList.add('avatar-fallback');this.remove();">
+        {% endif %}
+        <span class="avatar-initials" aria-hidden="true">{{ profile.first_name|slice:":1" }}J</span>
+      </div>
+
+      <div class="code-card" aria-hidden="true">
+        <div class="code-card-bar"><i></i><i></i><i></i><span>developer.ts</span></div>
+<pre class="code-card-body"><code><span class="tk-k">const</span> <span class="tk-v">dev</span> = {
+  <span class="tk-p">name</span>: <span class="tk-s">'{{ profile.name }}'</span>,
+  <span class="tk-p">role</span>: <span class="tk-s">'{{ profile.title }}'</span>,
+  <span class="tk-p">based</span>: <span class="tk-s">'{{ profile.location }}'</span>,
+  <span class="tk-p">stack</span>: [<span class="tk-s">'Mongo'</span>, <span class="tk-s">'Express'</span>, <span class="tk-s">'React'</span>, <span class="tk-s">'Node'</span>],
+  <span class="tk-p">also</span>: [<span class="tk-s">'Next.js'</span>, <span class="tk-s">'Django'</span>, <span class="tk-s">'LLM APIs'</span>],
+  <span class="tk-p">openToWork</span>: <span class="tk-b">true</span>
+};</code></pre>
+      </div>
+    </div>
+  </div>
+
+  {% if marquee_skills %}
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        {% for i in "12" %}
+          <ul>
+            {% for skill in marquee_skills %}<li>{{ skill }}</li>{% endfor %}
+          </ul>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+</section>

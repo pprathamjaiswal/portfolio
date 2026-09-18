@@ -1,0 +1,27 @@
+{% if skill_groups %}
+<section class="section" id="skills" aria-labelledby="skills-title">
+  <div class="shell">
+    <header class="section-head reveal">
+      <p class="eyebrow">02 — Tech stack</p>
+      <h2 class="section-title" id="skills-title">Tools I build with</h2>
+      <p class="section-sub">The languages, frameworks and services I reach for day to day.</p>
+    </header>
+
+    <ul class="skill-grid">
+      {% for group in skill_groups %}
+        <li class="skill-card reveal" style="--d:{{ forloop.counter }}">
+          <div class="skill-card-head">
+            <span class="skill-icon" aria-hidden="true">
+              <svg class="icon"><use href="#i-{{ group.icon }}"></use></svg>
+            </span>
+            <h3>{{ group.name }}</h3>
+          </div>
+          <ul class="chip-list">
+            {% for item in group.items %}<li class="chip">{{ item }}</li>{% endfor %}
+          </ul>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+{% endif %}

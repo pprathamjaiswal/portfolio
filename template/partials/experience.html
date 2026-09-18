@@ -1,0 +1,43 @@
+{% if experience %}
+<section class="section" id="experience" aria-labelledby="experience-title">
+  <div class="shell">
+    <header class="section-head reveal">
+      <p class="eyebrow">04 — Experience</p>
+      <h2 class="section-title" id="experience-title">Where I've worked</h2>
+    </header>
+
+    <ol class="timeline">
+      {% for job in experience %}
+        <li class="timeline-item reveal" style="--d:{{ forloop.counter }}">
+          <span class="timeline-dot" aria-hidden="true"></span>
+          <div class="timeline-card">
+            <div class="timeline-head">
+              <h3>
+                {{ job.role }}
+                <span class="at">at</span>
+                {% if job.url %}
+                  <a href="{{ job.url }}" target="_blank" rel="noopener noreferrer">{{ job.company }}</a>
+                {% else %}{{ job.company }}{% endif %}
+              </h3>
+              <p class="timeline-when">
+                {{ job.start }}{% if job.end %} — {{ job.end }}{% endif %}{% if job.location %} · {{ job.location }}{% endif %}
+              </p>
+            </div>
+            {% if job.summary %}<p class="timeline-summary">{{ job.summary }}</p>{% endif %}
+            {% if job.highlights %}
+              <ul class="bullets">
+                {% for highlight in job.highlights %}<li>{{ highlight }}</li>{% endfor %}
+              </ul>
+            {% endif %}
+            {% if job.stack %}
+              <ul class="chip-list chip-list-sm">
+                {% for tech in job.stack %}<li class="chip">{{ tech }}</li>{% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+        </li>
+      {% endfor %}
+    </ol>
+  </div>
+</section>
+{% endif %}

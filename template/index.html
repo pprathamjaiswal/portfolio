@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head_extra %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "{{ profile.name }}",
+  "jobTitle": "{{ profile.title }}",
+  "url": "{{ site_url }}",
+  "email": "mailto:{{ profile.email }}",
+  "image": "{{ avatar_url }}",
+  "address": {"@type": "PostalAddress", "addressLocality": "{{ profile.location }}"},
+  "sameAs": [{% for s in socials %}{% if s.icon != 'mail' %}"{{ s.url }}"{% if not forloop.last %}, {% endif %}{% endif %}{% endfor %}],
+  "knowsAbout": [{% for g in skill_groups %}{% for item in g.items %}"{{ item }}"{% if not forloop.parentloop.last or not forloop.last %}, {% endif %}{% endfor %}{% endfor %}]
+}
+</script>
+{% endblock %}
+
+{% block body %}
+
+<div class="bg-layer" aria-hidden="true">
+  {% comment %}
+    No `autoplay` and no `src` until JavaScript decides which theme is active:
+    the browser would otherwise download both clips on every visit. Each keeps
+    a poster frame so the background is never blank.
+  {% endcomment %}
+  <video class="bg-video" data-theme-video="dark"
+         data-src="{% static 'video/dark.mp4' %}"
+         poster="{% static 'video/dark-poster.jpg' %}"
+         muted loop playsinline preload="none"></video>
+  <video class="bg-video" data-theme-video="light"
+         data-src="{% static 'video/light.mp4' %}"
+         poster="{% static 'video/light-poster.jpg' %}"
+         muted loop playsinline preload="none"></video>
+  <div class="bg-wash"></div>
+  <div class="bg-grid"></div>
+</div>
+
+<header class="site-header" id="siteHeader">
+  <div class="shell header-inner">
+    <a class="brand" href="#top" aria-label="{{ profile.name }} — back to top">
+      <span class="brand-mark" aria-hidden="true">{{ profile.first_name|slice:":1" }}</span>
+      <span class="brand-text">{{ profile.name }}</span>
+    </a>
+
+    <nav class="nav-desktop" aria-label="Primary">
+      <ul>
+        {% for link in nav_links %}
+          <li><a href="#{{ link.id }}" data-nav="{{ link.id }}">{{ link.label }}</a></li>
+        {% endfor %}
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <button class="icon-btn" id="themeToggle" type="button"
+              aria-label="Switch to light theme" aria-pressed="false">
+        <svg class="icon icon-sun" aria-hidden="true"><use href="#i-sun"></use></svg>
+        <svg class="icon icon-moon" aria-hidden="true"><use href="#i-moon"></use></svg>
+      </button>
+      <a class="btn btn-sm btn-primary header-cta" href="#contact">Get in touch</a>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button"
+              aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav">
+        <svg class="icon icon-open" aria-hidden="true"><use href="#i-menu"></use></svg>
+        <svg class="icon icon-shut" aria-hidden="true"><use href="#i-close"></use></svg>
+      </button>
+    </div>
+  </div>
+
+  <nav class="nav-mobile" id="mobileNav" aria-label="Mobile" hidden>
+    <ul>
+      {% for link in nav_links %}
+        <li><a href="#{{ link.id }}">{{ link.label }}</a></li>
+      {% endfor %}
+    </ul>
+    <a class="btn btn-primary btn-block" href="#contact">Get in touch</a>
+  </nav>
+</header>
+
+<main id="main">
+  <span id="top"></span>
+  {% include "partials/hero.html" %}
+  {% include "partials/about.html" %}
+  {% include "partials/skills.html" %}
+  {% include "partials/projects.html" %}
+  {% include "partials/experience.html" %}
+  {% include "partials/education.html" %}
+  {% include "partials/contact.html" %}
+</main>
+
+<footer class="site-footer">
+  <div class="shell footer-inner">
+    <p class="footer-copy">© <span id="year">2026</span> {{ profile.name }}. Built with Django.</p>
+    <ul class="footer-socials">
+      {% for s in socials %}
+        <li>
+          <a href="{{ s.url }}" aria-label="{{ s.name }}"
+             {% if s.icon != 'mail' %}target="_blank" rel="noopener noreferrer"{% endif %}>
+            <svg class="icon" aria-hidden="true"><use href="#i-{{ s.icon }}"></use></svg>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</footer>
+
+<button class="to-top" id="toTop" type="button" aria-label="Back to top" hidden>
+  <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg>
+</button>
+
+{% endblock %}

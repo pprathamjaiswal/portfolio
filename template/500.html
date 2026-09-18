@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Something went wrong — Pratham Jaiswal{% endblock %}
+{% block description %}An unexpected error occurred.{% endblock %}
+
+{% block body %}
+<main class="error-page" id="main">
+  <div class="shell error-inner">
+    <p class="error-code">500</p>
+    <h1>Something went wrong</h1>
+    <p class="section-sub">An unexpected error occurred on the server. Please try again in a moment.</p>
+    <a class="btn btn-primary" href="/">
+      Back to the portfolio <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"></use></svg>
+    </a>
+  </div>
+</main>
+{% endblock %}

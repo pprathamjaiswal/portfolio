@@ -1,0 +1,27 @@
+{
+  // Treat Django templates as Django HTML so tags like {% url %} stop being
+  // flagged as errors and Emmet still works.
+  "files.associations": {
+    "**/template/**/*.html": "django-html"
+  },
+  "emmet.includeLanguages": {
+    "django-html": "html"
+  },
+
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "staticfiles": true
+  },
+
+  "python.analysis.extraPaths": ["."],
+  "python.terminal.activateEnvironment": true,
+
+  "[python]": {
+    "editor.rulers": [88],
+    "editor.tabSize": 4
+  },
+  "[django-html]": {
+    "editor.tabSize": 2
+  }
+}

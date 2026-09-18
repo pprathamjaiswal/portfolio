@@ -1,0 +1,14 @@
+New message from your portfolio contact form
+============================================
+
+From:     {{ name }}
+Email:    {{ email }}
+Received: {{ received_at|date:"j F Y, g:i a" }}
+
+Message
+-------
+{{ message }}
+
+--
+Reply to this email to answer {{ name }} directly.
+All messages: {{ admin_url }}

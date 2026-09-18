@@ -1,0 +1,69 @@
+{% if education or certifications or achievements %}
+<section class="section" id="education" aria-labelledby="education-title">
+  <div class="shell">
+    <header class="section-head reveal">
+      <p class="eyebrow">{% if experience %}05{% else %}04{% endif %} — Background</p>
+      <h2 class="section-title" id="education-title">Education{% if certifications %} &amp; certifications{% endif %}</h2>
+    </header>
+
+    <div class="background-grid cols-{{ background_columns }}">
+      {% if education %}
+        <div class="bg-col">
+          <h3 class="col-title">
+            <svg class="icon" aria-hidden="true"><use href="#i-cap"></use></svg> Education
+          </h3>
+          <ul class="stack-list">
+            {% for item in education %}
+              <li class="stack-card reveal" style="--d:{{ forloop.counter }}">
+                <h4>{{ item.degree }}</h4>
+                <p class="stack-meta">
+                  {{ item.institution }}{% if item.location %} · {{ item.location }}{% endif %}
+                </p>
+                {% if item.period %}<p class="stack-when">{{ item.period }}</p>{% endif %}
+                {% if item.details %}<p class="muted">{{ item.details }}</p>{% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      {% if certifications %}
+        <div class="bg-col">
+          <h3 class="col-title">
+            <svg class="icon" aria-hidden="true"><use href="#i-award"></use></svg> Certifications
+          </h3>
+          <ul class="stack-list">
+            {% for item in certifications %}
+              <li class="stack-card reveal" style="--d:{{ forloop.counter }}">
+                <h4>
+                  {% if item.url %}
+                    <a href="{{ item.url }}" target="_blank" rel="noopener noreferrer">{{ item.name }}</a>
+                  {% else %}{{ item.name }}{% endif %}
+                </h4>
+                <p class="stack-meta">{{ item.issuer }}{% if item.year %} · {{ item.year }}{% endif %}</p>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      {% if achievements %}
+        <div class="bg-col">
+          <h3 class="col-title">
+            <svg class="icon" aria-hidden="true"><use href="#i-award"></use></svg> Achievements
+          </h3>
+          <ul class="stack-list">
+            {% for item in achievements %}
+              <li class="stack-card reveal" style="--d:{{ forloop.counter }}">
+                <h4>{{ item.title }}</h4>
+                {% if item.detail %}<p class="stack-meta">{{ item.detail }}</p>{% endif %}
+                {% if item.year %}<p class="stack-when">{{ item.year }}</p>{% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endif %}

@@ -1,0 +1,72 @@
+# Render Blueprint — https://render.com/docs/blueprint-spec
+#
+# In Render: New → Blueprint → connect this repository. Render reads this file
+# and creates the service. You then fill in the four variables marked
+# `sync: false` in the dashboard (they are secrets, so they are never committed).
+services:
+  - type: web
+    name: pratham-portfolio
+    runtime: python
+    plan: free
+    region: singapore # closest to India; also: oregon, frankfurt, ohio, virginia
+
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn portfolio.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 60"
+
+    envVars:
+      # Generated once by Render and kept for the life of the service.
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+
+      - key: DJANGO_DEBUG
+        value: "False"
+
+      - key: PYTHON_VERSION
+        value: "3.12.7"
+
+      # Render terminates TLS in front of the app and forwards the real scheme.
+      - key: DJANGO_SECURE_SSL_REDIRECT
+        value: "True"
+
+      - key: DJANGO_TIME_ZONE
+        value: Asia/Kolkata
+
+      - key: GITHUB_USERNAME
+        value: pprathamjaiswal
+
+      - key: CONTACT_NOTIFY_EMAIL
+        value: pratham.m.jaiswal@gmail.com
+
+      - key: EMAIL_HOST
+        value: smtp.gmail.com
+      - key: EMAIL_PORT
+        value: "587"
+      - key: EMAIL_USE_TLS
+        value: "True"
+
+      # --- Fill these in the Render dashboard, never in this file -----------
+      # They are secrets, so `sync: false` keeps them out of git. Render will
+      # prompt for each one when you create the Blueprint.
+      #
+      # REQUIRED
+      #   SITE_URL   https://<your-service>.onrender.com  (no trailing slash)
+      #
+      # OPTIONAL — the site works without all of these
+      #   GITHUB_TOKEN          raises the GitHub rate limit
+      #   EMAIL_HOST_USER       your Gmail address
+      #   EMAIL_HOST_PASSWORD   Gmail App Password: 16 chars, no spaces
+      #   DATABASE_URL          managed Postgres (e.g. Neon). Leave blank and
+      #                         the site uses SQLite, which this host wipes on
+      #                         every redeploy — contact emails still arrive,
+      #                         but the /admin archive and your admin login
+      #                         reset each deploy.
+      - key: SITE_URL
+        sync: false
+      - key: GITHUB_TOKEN
+        sync: false
+      - key: EMAIL_HOST_USER
+        sync: false
+      - key: EMAIL_HOST_PASSWORD
+        sync: false
+      - key: DATABASE_URL
+        sync: false

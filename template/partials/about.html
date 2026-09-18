@@ -1,0 +1,49 @@
+<section class="section" id="about" aria-labelledby="about-title">
+  <div class="shell">
+    <header class="section-head reveal">
+      <p class="eyebrow">01 — About</p>
+      <h2 class="section-title" id="about-title">Building across the full stack</h2>
+    </header>
+
+    <div class="about-grid">
+      <div class="about-copy reveal" style="--d:1">
+        {% for paragraph in profile.about %}
+          <p>{{ paragraph }}</p>
+        {% endfor %}
+
+        <dl class="about-facts">
+          <div>
+            <dt>Based in</dt>
+            <dd>{{ profile.location }}</dd>
+          </div>
+          <div>
+            <dt>Focus</dt>
+            <dd>{{ profile.subtitle }}</dd>
+          </div>
+          <div>
+            <dt>Email</dt>
+            <dd><a href="mailto:{{ profile.email }}">{{ profile.email }}</a></dd>
+          </div>
+          <div>
+            <dt>GitHub</dt>
+            <dd>
+              <a href="{{ github_profile_url }}" target="_blank" rel="noopener noreferrer">{{ github_username }}</a>
+            </dd>
+          </div>
+        </dl>
+      </div>
+
+      <ul class="focus-list">
+        {% for area in focus_areas %}
+          <li class="focus-card reveal" style="--d:{{ forloop.counter }}">
+            <span class="focus-icon" aria-hidden="true">
+              <svg class="icon"><use href="#i-{{ area.icon }}"></use></svg>
+            </span>
+            <h3>{{ area.title }}</h3>
+            <p>{{ area.body }}</p>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</section>

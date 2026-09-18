@@ -1,0 +1,100 @@
+<section class="section section-contact" id="contact" aria-labelledby="contact-title">
+  <div class="shell">
+    <div class="contact-panel reveal">
+      <div class="contact-intro">
+        <p class="eyebrow">{% if experience %}06{% else %}05{% endif %} — Contact</p>
+        <h2 class="section-title" id="contact-title">Let's build something</h2>
+        <p class="section-sub">
+          Hiring, freelance work or just comparing notes on a stack — send a message and
+          I'll get back to you.
+        </p>
+
+        <ul class="contact-methods">
+          <li>
+            <span class="contact-icon" aria-hidden="true">
+              <svg class="icon"><use href="#i-mail"></use></svg>
+            </span>
+            <div>
+              <p class="contact-label">Email</p>
+              <p class="contact-value">
+                <a href="mailto:{{ profile.email }}">{{ profile.email }}</a>
+                <button class="copy-btn" type="button" data-copy="{{ profile.email }}"
+                        aria-label="Copy email address">
+                  <svg class="icon icon-copy" aria-hidden="true"><use href="#i-copy"></use></svg>
+                  <svg class="icon icon-done" aria-hidden="true"><use href="#i-check"></use></svg>
+                </button>
+              </p>
+            </div>
+          </li>
+          <li>
+            <span class="contact-icon" aria-hidden="true">
+              <svg class="icon"><use href="#i-pin"></use></svg>
+            </span>
+            <div>
+              <p class="contact-label">Location</p>
+              <p class="contact-value">{{ profile.location }}</p>
+            </div>
+          </li>
+        </ul>
+
+        <ul class="hero-socials contact-socials">
+          {% for s in socials %}
+            {% if s.icon != 'mail' %}
+              <li>
+                <a href="{{ s.url }}" class="social-link" aria-label="{{ s.name }}: {{ s.handle }}"
+                   target="_blank" rel="noopener noreferrer">
+                  <svg class="icon" aria-hidden="true"><use href="#i-{{ s.icon }}"></use></svg>
+                  <span>{{ s.name }}</span>
+                </a>
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+
+      <form class="contact-form" id="contactForm" method="post" action="{% url 'contact_submit' %}" novalidate>
+        {% csrf_token %}
+
+        <div class="field">
+          <label for="cf-name">Name</label>
+          <input id="cf-name" name="name" type="text" autocomplete="name"
+                 required minlength="3" maxlength="100" placeholder="Your name">
+        </div>
+
+        <div class="field">
+          <label for="cf-email">Email</label>
+          <input id="cf-email" name="email" type="email" autocomplete="email"
+                 required maxlength="254" placeholder="you@company.com">
+        </div>
+
+        <div class="field">
+          <label for="cf-message">Message</label>
+          <textarea id="cf-message" name="message" rows="5" required minlength="10"
+                    maxlength="4000" placeholder="What would you like to build?"></textarea>
+        </div>
+
+        {# Honeypot — hidden from people, irresistible to bots. #}
+        <div class="hp" aria-hidden="true">
+          <label for="cf-website">Website</label>
+          <input id="cf-website" name="website" type="text" tabindex="-1" autocomplete="off">
+        </div>
+
+        <button class="btn btn-primary btn-block" type="submit" id="contactSubmit">
+          <span class="btn-label">Send message</span>
+          <span class="spinner" aria-hidden="true"></span>
+        </button>
+
+        {% comment %}
+          Without JavaScript the POST redirects back here with ?contact=ok|error.
+          Only those two fixed values are ever rendered, never user-supplied text.
+        {% endcomment %}
+        <p class="form-status{% if request.GET.contact == 'ok' %} is-ok{% elif request.GET.contact == 'error' %} is-error{% endif %}"
+           id="formStatus" role="status" aria-live="polite">
+          {% if request.GET.contact == 'ok' %}Thanks — your message is on its way. I'll reply soon.
+          {% elif request.GET.contact == 'error' %}That didn't go through. Please check your details and try again.
+          {% endif %}
+        </p>
+      </form>
+    </div>
+  </div>
+</section>
